@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+@custom-variant dark (&:is(.dark, .dark *));
+
+@theme {
+  --animate-blink: blink 1s step-end infinite;
+  --font-sans: 'Poppins', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  outline: none;
+}
+
+.todo-list-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #fdba74 transparent;
+}
+
+.todo-list-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.todo-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.todo-list-scroll::-webkit-scrollbar-thumb {
+  background-color: #fdba74;
+  border-radius: 9999px;
+}
+
+.dark .todo-list-scroll {
+  scrollbar-color: #4b5563 transparent;
+}
+
+.dark .todo-list-scroll::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
