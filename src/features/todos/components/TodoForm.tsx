@@ -16,7 +16,7 @@ export function TodoForm({ onAdd }: TodoFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row">
       <input
         type="text"
         value={text}
@@ -27,7 +27,7 @@ export function TodoForm({ onAdd }: TodoFormProps) {
       <button
         type="submit"
         disabled={!text.trim()}
-        className="cursor-pointer px-5 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed transition"
+        className="cursor-pointer w-full sm:w-auto px-5 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-400 hover:from-orange-600 hover:to-amber-500 text-white font-medium disabled:opacity-40 disabled:cursor-not-allowed transition"
       >
         Create Task
       </button>
