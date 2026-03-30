@@ -8,8 +8,16 @@ import { useTheme } from '@/shared/hooks/useTheme';
 export default function App() {
   const [filter, setFilter] = useState<TodoFilter>('all');
   const { theme, toggleTheme } = useTheme();
-  const { todos, activeCount, completedCount, addTodo, toggleTodo, deleteTodo, clearCompleted } =
-    useTodos(filter);
+  const {
+    todos,
+    activeCount,
+    completedCount,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    editTodo,
+    clearCompleted,
+  } = useTodos(filter);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800 py-8 px-4 sm:py-16">
@@ -31,7 +39,7 @@ export default function App() {
               onClearCompleted={clearCompleted}
             />
           )}
-          <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+          <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} onEdit={editTodo} />
         </motion.div>
       </div>
     </div>

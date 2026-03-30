@@ -44,6 +44,15 @@ export function useTodos(filter: TodoFilter) {
     setTodos((prev) => prev.filter((todo) => !todo.completed));
   }, [setTodos]);
 
+  const editTodo = useCallback(
+    (id: string, newText: string) => {
+      const trimmed = newText.trim();
+      if (!trimmed) return;
+      setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, text: trimmed } : todo)));
+    },
+    [setTodos],
+  );
+
   const filteredTodos = useMemo(() => {
     switch (filter) {
       case 'active':
@@ -65,6 +74,7 @@ export function useTodos(filter: TodoFilter) {
     addTodo,
     toggleTodo,
     deleteTodo,
+    editTodo,
     clearCompleted,
   };
 }

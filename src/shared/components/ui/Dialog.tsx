@@ -42,7 +42,10 @@ export function Dialog({
             transition={{ duration: 0.2, ease: 'easeOut' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 id="dialog-title" className="text-base font-semibold text-gray-800 dark:text-gray-100 mb-2">
+            <h2
+              id="dialog-title"
+              className="text-base font-semibold text-gray-800 dark:text-gray-100 mb-2"
+            >
               {title}
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{description}</p>

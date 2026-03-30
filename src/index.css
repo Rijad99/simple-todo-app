@@ -2,7 +2,8 @@
 @custom-variant dark (&:is(.dark, .dark *));
 
 @theme {
-  --animate-blink: blink 1s step-end infinite;
+  --animate-blink: blink 0.75s step-end infinite;
+  --animate-text-pulse: text-pulse 2s ease-in-out infinite;
   --font-sans: 'Poppins', sans-serif;
 }
 
@@ -36,6 +37,16 @@
 
 .dark .todo-list-scroll::-webkit-scrollbar-thumb {
   background-color: #4b5563;
+}
+
+@keyframes text-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
 }
 
 @keyframes blink {
