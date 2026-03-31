@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { KeyboardEvent } from 'react';
 import type { Todo } from '../types';
 import { Checkbox } from '@/shared/components/ui/Checkbox';
@@ -16,7 +17,18 @@ interface TodoItemProps {
 export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
+  const [tooltipPos, setTooltipPos] = useState<{ bottom: number; left: number } | null>(null);
   const itemRef = useRef<HTMLLIElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
+
+  const handleTextMouseEnter = () => {
+    const el = textRef.current;
+    if (!el || el.scrollWidth <= el.offsetWidth) return;
+    const rect = el.getBoundingClientRect();
+    setTooltipPos({ bottom: window.innerHeight - rect.top + 8, left: rect.left });
+  };
+
+  const handleTextMouseLeave = () => setTooltipPos(null);
 
   useEffect(() => {
     if (!isEditing) return;
@@ -75,12 +87,15 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
           value={editText}
           onChange={(e) => setEditText(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 text-sm text-gray-700 dark:text-gray-200 bg-transparent animate-text-pulse"
+          className="flex-1 min-w-0 text-sm text-gray-700 dark:text-gray-200 bg-transparent animate-text-pulse"
         />
       ) : (
         <span
+          ref={textRef}
           onClick={handleEdit}
-          className={`flex-1 text-sm cursor-text transition ${
+          onMouseEnter={handleTextMouseEnter}
+          onMouseLeave={handleTextMouseLeave}
+          className={`flex-1 min-w-0 text-sm cursor-text transition truncate ${
             todo.completed
               ? 'line-through text-gray-400 dark:text-gray-500'
               : 'text-gray-700 dark:text-gray-200'
@@ -88,6 +103,26 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
         >
           {todo.text}
         </span>
+      )}
+
+      {createPortal(
+        <AnimatePresence>
+          {tooltipPos && (
+            <motion.div
+              role="tooltip"
+              style={{ position: 'fixed', bottom: tooltipPos.bottom, left: tooltipPos.left }}
+              initial={{ opacity: 0, y: 6, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 6, scale: 0.97 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              className="z-50 px-3 py-1.5 bg-gray-800 dark:bg-gray-950 text-white text-xs rounded-md shadow-lg max-w-xs w-max break-words pointer-events-none"
+            >
+              {todo.text}
+              <span className="absolute top-full left-4 border-4 border-transparent border-t-gray-800 dark:border-t-gray-950" />
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
       )}
 
       {isEditing ? (
